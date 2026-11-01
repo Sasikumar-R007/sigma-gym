@@ -5,6 +5,9 @@
 :root {
   --background: #070707;
   --foreground: #F5F5F7;
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-outfit: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-teko: 'Teko', system-ui, sans-serif;
 }
 
 * {

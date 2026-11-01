@@ -1,25 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Outfit, Teko } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  variable: "--font-outfit",
-  display: "swap",
-});
-
-const teko = Teko({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-teko",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "IRONVAULT FITNESS | Luxury Strength & Performance Gym - Indiranagar, Bangalore",
@@ -30,6 +10,9 @@ export const metadata: Metadata = {
     description: "Bangalore's most prestigious strength sanctuary. Eleiko calibrated equipment, private training bays, cryotherapy, and science-backed coaching.",
     type: "website",
   },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
@@ -39,9 +22,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark scroll-smooth">
-      <body
-        className={`${inter.variable} ${outfit.variable} ${teko.variable} bg-[#070707] text-[#F5F5F7] font-sans antialiased`}
-      >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Teko:wght@500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="bg-[#070707] text-[#F5F5F7] font-sans antialiased selection:bg-[#CCFF00] selection:text-black">
         {children}
       </body>
     </html>
