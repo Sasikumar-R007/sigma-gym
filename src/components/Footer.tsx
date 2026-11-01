@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import { Dumbbell, ArrowUp, Sparkles, MapPin, Phone, Mail } from "lucide-react";
+import { Dumbbell, ArrowUp, Sparkles, MapPin, Mail } from "lucide-react";
 import { GYM_DATA } from "@/data/gymData";
 
 interface FooterProps {
@@ -195,12 +194,10 @@ export default function Footer({ onOpenTrial }: FooterProps) {
                 <span>Level 4 & 5, Apex Prestige Tower, 100 Feet Rd, Indiranagar, Bengaluru, 560038</span>
               </div>
               <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-vault-lime shrink-0" />
-                <span className="font-mono text-zinc-300">{GYM_DATA.brand.phoneDisplay}</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-vault-lime shrink-0" />
-                <span className="text-zinc-300">{GYM_DATA.brand.email}</span>
+                <a href="mailto:symphonixtech@gmail.com" className="text-zinc-300 hover:text-vault-lime font-mono transition-colors">
+                  symphonixtech@gmail.com
+                </a>
               </div>
               <div className="pt-2 text-[11px] text-zinc-500 leading-tight">
                 Hours: Mon–Fri: 5:30 AM – 11:00 PM <br />

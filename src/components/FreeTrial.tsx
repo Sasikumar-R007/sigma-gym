@@ -360,8 +360,7 @@ export default function FreeTrial({ initialProgram = "" }: FreeTrialProps) {
                   </button>
 
                   <p className="text-[11px] text-zinc-400 text-center mt-3">
-                    Demonstration project for Symphonix Tech. No actual booking will be sent to external servers. 
-                    An instant interactive VIP Pass will be generated for you.
+                    Demonstration project for Symphonix Tech • Inquiries: <a href="mailto:symphonixtech@gmail.com" className="text-vault-lime hover:underline font-mono">symphonixtech@gmail.com</a>
                   </p>
                 </div>
 

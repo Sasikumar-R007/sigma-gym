@@ -100,16 +100,14 @@ export const GYM_DATA = {
     slogan: "BUILD STRENGTH. BREAK LIMITS.",
     location: "Indiranagar, Bangalore",
     address: "Level 4 & 5, Apex Prestige Tower, 100 Feet Road, HAL 2nd Stage, Indiranagar, Bengaluru, Karnataka 560038",
-    phone: "+91 (80) 4920-8800",
-    phoneDisplay: "+91 80 4920 8800",
-    email: "concierge@ironvaultfitness.demo",
+    email: "symphonixtech@gmail.com",
     openingHours: {
       weekdays: "5:30 AM – 11:00 PM",
       saturday: "6:00 AM – 10:00 PM",
       sunday: "7:00 AM – 8:00 PM",
       members247: "24/7 Biometric Access for Pro & Elite Members",
     },
-    demoNotice: "Demonstration project developed for portfolio showcase by Symphonix Tech. All names, numbers and pricing are fictional representations.",
+    demoNotice: "Demonstration project developed for portfolio showcase by Symphonix Tech. Inquiries: symphonixtech@gmail.com",
   },
 
   stats: [

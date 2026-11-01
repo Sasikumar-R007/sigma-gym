@@ -55,21 +55,23 @@ export default function Programs({ onSelectProgram, onOpenTrial }: ProgramsProps
             each program is backed by progressive overload and real-time biomechanical feedback.
           </p>
 
-          {/* Filter Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-8 p-1.5 rounded-xl bg-zinc-900/80 border border-zinc-800 backdrop-blur-md">
-            {filterTabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setSelectedFilter(tab.id)}
-                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
-                  selectedFilter === tab.id
-                    ? "bg-vault-lime text-black shadow-lime-glow/50"
-                    : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+          {/* Filter Tabs in One Row */}
+          <div className="w-full flex justify-center mt-8 px-2">
+            <div className="inline-flex items-center gap-1.5 p-1.5 rounded-xl bg-zinc-900/90 border border-zinc-800 backdrop-blur-md max-w-full overflow-x-auto flex-nowrap scrollbar-none">
+              {filterTabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setSelectedFilter(tab.id)}
+                  className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 whitespace-nowrap shrink-0 ${
+                    selectedFilter === tab.id
+                      ? "bg-vault-lime text-black shadow-lime-glow/50"
+                      : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 

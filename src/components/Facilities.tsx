@@ -51,21 +51,23 @@ export default function Facilities({ onOpenTrial }: FacilitiesProps) {
             Bangalore&apos;s most sophisticated contrast hydrotherapy suite.
           </p>
 
-          {/* Category Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-8 p-1.5 rounded-xl bg-zinc-900/80 border border-zinc-800 backdrop-blur-md">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
-                  activeTab === tab.id
-                    ? "bg-vault-lime text-black shadow-lime-glow/50"
-                    : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+          {/* Category Tabs in One Clean Row */}
+          <div className="w-full flex justify-center mt-8 px-2">
+            <div className="inline-flex items-center gap-1.5 p-1.5 rounded-xl bg-zinc-900/90 border border-zinc-800 backdrop-blur-md max-w-full overflow-x-auto flex-nowrap scrollbar-none">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 whitespace-nowrap shrink-0 ${
+                    activeTab === tab.id
+                      ? "bg-vault-lime text-black shadow-lime-glow/50"
+                      : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -177,24 +179,25 @@ export default function Facilities({ onOpenTrial }: FacilitiesProps) {
 
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox Modal with Height Boundary */}
       {lightboxFacility && (
         <div
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 sm:p-8"
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
           onClick={() => setLightboxFacility(null)}
         >
           <div
-            className="relative max-w-4xl w-full bg-zinc-900 border border-zinc-700 rounded-2xl overflow-hidden shadow-2xl"
+            className="relative max-w-2xl w-full bg-zinc-950 border border-zinc-700/80 rounded-2xl overflow-hidden shadow-2xl max-h-[88vh] flex flex-col my-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setLightboxFacility(null)}
-              className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/80 text-white flex items-center justify-center hover:bg-vault-lime hover:text-black transition-colors"
+              aria-label="Close lightbox"
+              className="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-black/80 text-white flex items-center justify-center hover:bg-vault-lime hover:text-black transition-colors"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
 
-            <div className="relative h-[360px] sm:h-[480px] w-full">
+            <div className="relative h-48 sm:h-64 w-full shrink-0">
               <Image
                 src={lightboxFacility.image}
                 alt={lightboxFacility.title}
@@ -203,26 +206,26 @@ export default function Facilities({ onOpenTrial }: FacilitiesProps) {
               />
             </div>
 
-            <div className="p-6 sm:p-8 space-y-3 bg-zinc-950">
+            <div className="p-5 sm:p-6 space-y-3 bg-zinc-950 overflow-y-auto">
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-vault-lime text-black">
+                <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-vault-lime text-black">
                   {lightboxFacility.badge}
                 </span>
-                <span className="text-xs text-zinc-400 uppercase tracking-wider font-semibold">
+                <span className="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold">
                   IronVault Indiranagar Facility
                 </span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-black text-white font-heading">
+              <h3 className="text-xl sm:text-2xl font-black text-white font-heading">
                 {lightboxFacility.title}
               </h3>
-              <p className="text-sm text-zinc-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
                 {lightboxFacility.description}
               </p>
-              <div className="flex flex-wrap gap-2 pt-2">
+              <div className="flex flex-wrap gap-1.5 pt-1">
                 {lightboxFacility.specs.map((spec, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1 rounded-full text-xs font-medium bg-zinc-800 text-zinc-300 border border-zinc-700"
+                    className="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-zinc-800 text-zinc-300 border border-zinc-700"
                   >
                     ✓ {spec}
                   </span>

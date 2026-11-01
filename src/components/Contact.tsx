@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { MapPin, Phone, Clock, ChevronDown, ChevronUp, Navigation, ExternalLink, ShieldCheck } from "lucide-react";
+import { MapPin, Mail, Clock, ChevronDown, ChevronUp, Navigation, ExternalLink, ShieldCheck } from "lucide-react";
 import { GYM_DATA } from "@/data/gymData";
 
 interface ContactProps {
@@ -63,22 +63,25 @@ export default function Contact({ onOpenTrial }: ContactProps) {
               </div>
             </div>
 
-            {/* Direct Lines */}
+            {/* Official Email Inquiries */}
             <div className="p-6 rounded-2xl bg-zinc-900/70 border border-zinc-800 hover:border-vault-lime/40 transition-colors">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl bg-zinc-800 border border-zinc-700 flex items-center justify-center text-vault-lime shrink-0">
-                  <Phone className="w-5 h-5" />
+                  <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-white">Concierge Desk</h4>
-                  <p className="text-sm text-zinc-200 mt-1 font-mono">
-                    {GYM_DATA.brand.phoneDisplay}
-                  </p>
-                  <p className="text-xs text-zinc-400 mt-0.5">
-                    Email: <span className="text-zinc-300">{GYM_DATA.brand.email}</span>
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-white">Official Communications</h4>
+                  <a
+                    href="mailto:symphonixtech@gmail.com"
+                    className="text-sm text-vault-lime font-mono hover:underline font-semibold mt-1 inline-block"
+                  >
+                    symphonixtech@gmail.com
+                  </a>
+                  <p className="text-xs text-zinc-400 mt-1">
+                    Contact for club tours, partnerships, and website development inquiries.
                   </p>
                   <span className="text-[10px] text-zinc-500 block mt-1">
-                    *Clearly fictional demo contact for Symphonix Tech presentation
+                    Direct developer contact: Symphonix Tech
                   </span>
                 </div>
               </div>
