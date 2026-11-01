@@ -15,11 +15,11 @@ export default function Facilities({ onOpenTrial }: FacilitiesProps) {
 
   const tabs = [
     { id: "all", label: "All Zones" },
-    { id: "strength", label: "Strength & Racks" },
-    { id: "free-weights", label: "Free Weights & Dumbbells" },
-    { id: "cardio", label: "Technogym Cardio" },
-    { id: "turf", label: "Performance Turf" },
-    { id: "recovery", label: "Recovery & Spa" },
+    { id: "strength", label: "Strength Deck" },
+    { id: "free-weights", label: "Free Weights" },
+    { id: "cardio", label: "Cardio Deck" },
+    { id: "turf", label: "Turf Arena" },
+    { id: "recovery", label: "Recovery Spa" },
   ];
 
   const filteredFacilities = GYM_DATA.facilities.filter((fac) => {
@@ -51,23 +51,21 @@ export default function Facilities({ onOpenTrial }: FacilitiesProps) {
             Bangalore&apos;s most sophisticated contrast hydrotherapy suite.
           </p>
 
-          {/* Category Tabs in One Clean Row */}
-          <div className="w-full flex justify-center mt-8 px-2">
-            <div className="inline-flex items-center gap-1.5 p-1.5 rounded-xl bg-zinc-900/90 border border-zinc-800 backdrop-blur-md max-w-full overflow-x-auto flex-nowrap scrollbar-none">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`px-3.5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 whitespace-nowrap shrink-0 ${
-                    activeTab === tab.id
-                      ? "bg-vault-lime text-black shadow-lime-glow/50"
-                      : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
+          {/* Category Tabs (Clean Wrap, Zero Horizontal Scrollbars) */}
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-8 max-w-3xl mx-auto">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
+                  activeTab === tab.id
+                    ? "bg-vault-lime text-black shadow-lime-glow/50"
+                    : "bg-zinc-900/90 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
         </div>
 
