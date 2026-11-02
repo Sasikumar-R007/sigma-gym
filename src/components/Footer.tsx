@@ -41,6 +41,12 @@ export default function Footer({ onOpenTrial }: FooterProps) {
           </div>
 
           <div className="shrink-0 flex items-center gap-3">
+            <a
+              href="/login"
+              className="px-4 py-2.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white font-bold text-xs uppercase tracking-wider border border-zinc-700 transition-colors"
+            >
+              Staff Portal Login
+            </a>
             <button
               onClick={onOpenTrial}
               className="px-5 py-2.5 rounded-lg bg-vault-lime text-black font-extrabold uppercase text-xs tracking-wider hover:bg-vault-limeHover transition-all shadow-lime-glow/30"

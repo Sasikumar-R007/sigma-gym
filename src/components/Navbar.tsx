@@ -123,7 +123,14 @@ export default function Navbar({ onOpenTrial }: NavbarProps) {
           </nav>
 
           {/* Right Action Button (Clean Sleek Pill) */}
-          <div className="hidden sm:flex items-center gap-3 shrink-0">
+          <div className="hidden sm:flex items-center gap-2.5 shrink-0">
+            <Link
+              href="/login"
+              className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-zinc-300 hover:text-white hover:bg-zinc-800/80 transition-all border border-zinc-700/60"
+            >
+              Staff Portal
+            </Link>
+
             <button
               onClick={() => onOpenTrial()}
               className="relative inline-flex items-center justify-center px-5 py-2.5 text-xs font-black uppercase tracking-wider text-black bg-vault-lime rounded-full overflow-hidden transition-all duration-300 hover:bg-vault-limeHover hover:shadow-lime-glow hover:scale-105 active:scale-95 group shadow-md"
@@ -211,6 +218,15 @@ export default function Navbar({ onOpenTrial }: NavbarProps) {
                 <ShieldCheck className="w-4 h-4 text-black" />
                 <span>Claim Free 3-Day VIP Pass</span>
               </button>
+
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-zinc-900 border border-zinc-700 text-white font-bold text-xs uppercase tracking-wider hover:bg-zinc-800 transition-all"
+              >
+                <Dumbbell className="w-4 h-4 text-vault-lime" />
+                <span>Staff Gym OS Portal Login</span>
+              </Link>
 
               {/* Developer / Official Inquiries Card */}
               <div className="p-4 rounded-xl bg-[#131317] border border-zinc-800 space-y-2">
