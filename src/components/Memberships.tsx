@@ -63,10 +63,10 @@ export default function Memberships({ onSelectPlan }: MembershipsProps) {
 
           {/* Billing Toggle (Monthly / Quarterly / Annual) */}
           <div className="mt-8 flex flex-col sm:flex-row items-center gap-3">
-            <div className="inline-flex p-1.5 rounded-xl bg-zinc-900 border border-zinc-800 backdrop-blur-md">
+            <div className="inline-flex p-1 sm:p-1.5 rounded-xl bg-zinc-900 border border-zinc-800 max-w-full overflow-x-auto">
               <button
                 onClick={() => setBillingCycle("monthly")}
-                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
                   billingCycle === "monthly"
                     ? "bg-vault-lime text-black shadow-lime-glow/50"
                     : "text-zinc-400 hover:text-white"
@@ -76,7 +76,7 @@ export default function Memberships({ onSelectPlan }: MembershipsProps) {
               </button>
               <button
                 onClick={() => setBillingCycle("quarterly")}
-                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2 ${
+                className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-1.5 sm:gap-2 ${
                   billingCycle === "quarterly"
                     ? "bg-vault-lime text-black shadow-lime-glow/50"
                     : "text-zinc-400 hover:text-white"
@@ -84,7 +84,7 @@ export default function Memberships({ onSelectPlan }: MembershipsProps) {
               >
                 <span>Quarterly</span>
                 <span
-                  className={`px-2 py-0.5 rounded text-[10px] font-black tracking-tight ${
+                  className={`px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-black tracking-tight ${
                     billingCycle === "quarterly"
                       ? "bg-black text-vault-lime shadow-sm"
                       : "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
@@ -95,7 +95,7 @@ export default function Memberships({ onSelectPlan }: MembershipsProps) {
               </button>
               <button
                 onClick={() => setBillingCycle("annual")}
-                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-2 ${
+                className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-1.5 sm:gap-2 ${
                   billingCycle === "annual"
                     ? "bg-vault-lime text-black shadow-lime-glow/50"
                     : "text-zinc-400 hover:text-white"
@@ -103,13 +103,13 @@ export default function Memberships({ onSelectPlan }: MembershipsProps) {
               >
                 <span>Annual</span>
                 <span
-                  className={`px-2 py-0.5 rounded text-[10px] font-black tracking-tight ${
+                  className={`px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-black tracking-tight ${
                     billingCycle === "annual"
                       ? "bg-black text-vault-lime shadow-sm"
                       : "bg-vault-lime/20 text-vault-lime border border-vault-lime/40"
                   }`}
                 >
-                  -25% + Perks
+                  -25%<span className="hidden sm:inline"> + Perks</span>
                 </span>
               </button>
             </div>

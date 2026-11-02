@@ -45,12 +45,12 @@ export default function Schedule({ onOpenTrial }: ScheduleProps) {
           </p>
 
           {/* Day Selector Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-8 p-1.5 rounded-xl bg-zinc-900 border border-zinc-800">
+          <div className="grid grid-cols-7 gap-1 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-2 mt-6 sm:mt-8 p-1 sm:p-1.5 rounded-xl bg-zinc-900 border border-zinc-800 max-w-md sm:max-w-none mx-auto w-full">
             {days.map((day) => (
               <button
                 key={day.id}
                 onClick={() => setSelectedDay(day.id)}
-                className={`px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all duration-200 ${
+                className={`py-2 px-1 sm:px-4 rounded-lg text-[10px] sm:text-xs font-black uppercase tracking-wider text-center transition-all duration-200 ${
                   selectedDay === day.id
                     ? "bg-vault-lime text-black shadow-lime-glow/50"
                     : "text-zinc-400 hover:text-white hover:bg-zinc-800"

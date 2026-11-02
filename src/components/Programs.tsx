@@ -56,12 +56,12 @@ export default function Programs({ onSelectProgram, onOpenTrial }: ProgramsProps
           </p>
 
           {/* Filter Tabs (Clean Wrap, Zero Horizontal Scrollbars) */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-8 max-w-3xl mx-auto">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-6 sm:mt-8 max-w-3xl mx-auto px-2">
             {filterTabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setSelectedFilter(tab.id)}
-                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
                   selectedFilter === tab.id
                     ? "bg-vault-lime text-black shadow-lime-glow/50"
                     : "bg-zinc-900/90 text-zinc-400 hover:text-white hover:bg-zinc-800 border border-zinc-800"

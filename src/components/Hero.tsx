@@ -135,7 +135,7 @@ export default function Hero({ onOpenTrial, onOpenVideo }: HeroProps) {
 
           {/* Main Headline */}
           <div className="space-y-2">
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tight text-white font-heading leading-[0.95]">
+            <h1 className="text-3xl sm:text-6xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tight text-white font-heading leading-[0.95]">
               BUILD STRENGTH.
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-vault-lime via-vault-limeLight to-emerald-400">
@@ -198,14 +198,14 @@ export default function Hero({ onOpenTrial, onOpenVideo }: HeroProps) {
 
           {/* Live Demonstration Stats Grid with Counting Transition */}
           <div className="w-full pt-6 sm:pt-10">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 sm:p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 backdrop-blur-xl shadow-2xl">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 p-3 sm:p-5 rounded-2xl bg-zinc-950/80 border border-zinc-800/80 backdrop-blur-xl shadow-2xl">
               
               {/* Stat 1: 1,200+ */}
-              <div className="flex flex-col items-center justify-center p-3 text-center border-r border-zinc-800/60">
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-heading tracking-tight flex items-baseline">
+              <div className="flex flex-col items-center justify-center p-3 text-center border-r border-b border-zinc-800/60 md:border-b-0">
+                <div className="text-2xl sm:text-4xl lg:text-5xl font-black text-white font-heading tracking-tight flex items-baseline">
                   <AnimatedCounter end={1200} suffix="+" duration={1800} />
                 </div>
-                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-vault-lime mt-1">
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-vault-lime mt-1">
                   Active Members
                 </span>
                 <span className="text-[11px] text-zinc-400 mt-0.5 hidden sm:inline">
@@ -214,11 +214,11 @@ export default function Hero({ onOpenTrial, onOpenVideo }: HeroProps) {
               </div>
 
               {/* Stat 2: 15+ */}
-              <div className="flex flex-col items-center justify-center p-3 text-center md:border-r border-zinc-800/60">
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-heading tracking-tight flex items-baseline">
+              <div className="flex flex-col items-center justify-center p-3 text-center border-b border-zinc-800/60 md:border-b-0 md:border-r">
+                <div className="text-2xl sm:text-4xl lg:text-5xl font-black text-white font-heading tracking-tight flex items-baseline">
                   <AnimatedCounter end={15} suffix="+" duration={1500} />
                 </div>
-                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-vault-lime mt-1">
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-vault-lime mt-1">
                   Master Coaches
                 </span>
                 <span className="text-[11px] text-zinc-400 mt-0.5 hidden sm:inline">
@@ -228,10 +228,10 @@ export default function Hero({ onOpenTrial, onOpenVideo }: HeroProps) {
 
               {/* Stat 3: 12,000 */}
               <div className="flex flex-col items-center justify-center p-3 text-center border-r border-zinc-800/60">
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-heading tracking-tight flex items-baseline">
+                <div className="text-2xl sm:text-4xl lg:text-5xl font-black text-white font-heading tracking-tight flex items-baseline">
                   <AnimatedCounter end={12000} duration={2000} />
                 </div>
-                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-vault-lime mt-1">
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-vault-lime mt-1">
                   Strength Floor
                 </span>
                 <span className="text-[11px] text-zinc-400 mt-0.5 hidden sm:inline">
@@ -241,10 +241,10 @@ export default function Hero({ onOpenTrial, onOpenVideo }: HeroProps) {
 
               {/* Stat 4: 24/7 */}
               <div className="flex flex-col items-center justify-center p-3 text-center">
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-heading tracking-tight flex items-baseline">
+                <div className="text-2xl sm:text-4xl lg:text-5xl font-black text-white font-heading tracking-tight flex items-baseline">
                   <AnimatedCounter end={24} suffix="/7" duration={1600} />
                 </div>
-                <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-vault-lime mt-1">
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-vault-lime mt-1">
                   Vault Access
                 </span>
                 <span className="text-[11px] text-zinc-400 mt-0.5 hidden sm:inline">

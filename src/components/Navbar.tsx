@@ -2,7 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Dumbbell, Menu, X, ShieldCheck, ChevronRight, Mail } from "lucide-react";
+import {
+  Dumbbell,
+  Menu,
+  X,
+  ShieldCheck,
+  ChevronRight,
+  Mail,
+  Flame,
+  Users,
+  Layers,
+  Sparkles,
+  Calendar,
+  MapPin,
+} from "lucide-react";
 import { GYM_DATA } from "@/data/gymData";
 
 interface NavbarProps {
@@ -25,13 +38,27 @@ export default function Navbar({ onOpenTrial }: NavbarProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Prevent background scrolling when mobile drawer is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   const navLinks = [
-    { name: "About", href: "#about" },
-    { name: "Programs", href: "#programs" },
-    { name: "Trainers", href: "#trainers" },
-    { name: "Facilities", href: "#facilities" },
-    { name: "Memberships", href: "#memberships" },
-    { name: "Transformations", href: "#transformations" },
+    { name: "About", href: "#about", icon: Sparkles },
+    { name: "Programs", href: "#programs", icon: Dumbbell },
+    { name: "Trainers", href: "#trainers", icon: Users },
+    { name: "Facilities", href: "#facilities", icon: Layers },
+    { name: "Memberships", href: "#memberships", icon: ShieldCheck },
+    { name: "Transformations", href: "#transformations", icon: Flame },
+    { name: "Schedule", href: "#schedule", icon: Calendar },
+    { name: "Contact", href: "#contact", icon: MapPin },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -46,9 +73,9 @@ export default function Navbar({ onOpenTrial }: NavbarProps) {
   return (
     <header
       className={`sticky top-0 z-40 transition-all duration-300 ${
-        isScrolled
-          ? "bg-[#09090b]/92 backdrop-blur-md border-b border-white/10 shadow-2xl py-3"
-          : "bg-gradient-to-b from-black/95 to-transparent py-4 sm:py-5"
+        isScrolled || mobileMenuOpen
+          ? "bg-[#09090b] border-b border-zinc-800 shadow-2xl py-3"
+          : "bg-[#09090b]/95 sm:bg-gradient-to-b sm:from-black/95 sm:to-transparent py-3 sm:py-5 border-b border-zinc-900/40 sm:border-b-0 backdrop-blur-md"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -83,7 +110,7 @@ export default function Navbar({ onOpenTrial }: NavbarProps) {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-            {navLinks.map((link) => (
+            {navLinks.slice(0, 6).map((link) => (
               <a
                 key={link.name}
                 href={link.href}
@@ -108,11 +135,11 @@ export default function Navbar({ onOpenTrial }: NavbarProps) {
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Action & Hamburger */}
           <div className="flex items-center gap-2 lg:hidden">
             <button
               onClick={() => onOpenTrial()}
-              className="sm:hidden px-3.5 py-1.5 text-xs font-black uppercase tracking-wider text-black bg-vault-lime rounded-full"
+              className="px-3.5 py-1.5 text-xs font-black uppercase tracking-wider text-black bg-vault-lime rounded-full shadow-sm hover:bg-vault-limeHover active:scale-95 transition-all"
             >
               Free Trial
             </button>
@@ -120,7 +147,11 @@ export default function Navbar({ onOpenTrial }: NavbarProps) {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle Menu"
-              className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white hover:border-vault-lime transition-colors"
+              className={`p-2 rounded-lg border transition-all ${
+                mobileMenuOpen
+                  ? "bg-vault-lime text-black border-vault-lime"
+                  : "bg-zinc-900 border-zinc-700 text-zinc-200 hover:text-white hover:border-vault-lime"
+              }`}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -128,47 +159,77 @@ export default function Navbar({ onOpenTrial }: NavbarProps) {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Solid Opaque Mobile Menu Drawer (Zero transparency, high contrast) */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[60px] bg-[#0c0c0e]/98 border-b border-zinc-800 backdrop-blur-xl shadow-2xl transition-all duration-300 max-h-[85vh] overflow-y-auto">
-          <div className="px-6 py-6 space-y-4">
-            <div className="grid grid-cols-2 gap-2 pb-4 border-b border-zinc-800">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className="flex items-center justify-between p-3 rounded-lg bg-zinc-900/60 border border-zinc-800/80 text-xs sm:text-sm font-semibold text-zinc-200 hover:text-vault-lime hover:border-vault-lime/50 transition-colors"
-                >
-                  <span>{link.name}</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-zinc-500" />
-                </a>
-              ))}
+        <div className="lg:hidden fixed inset-x-0 top-[61px] bottom-0 z-50 bg-[#09090b] border-t border-zinc-800 shadow-[0_25px_60px_rgba(0,0,0,0.98)] overflow-y-auto">
+          <div className="max-w-lg mx-auto px-5 py-6 space-y-6">
+            
+            {/* Quick Title & Indiranagar Tag */}
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+              <span className="text-[11px] font-black uppercase tracking-wider text-zinc-400">
+                NAVIGATION DIRECTORY
+              </span>
+              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900 border border-zinc-700 text-vault-lime font-bold">
+                Indiranagar, Bangalore
+              </span>
             </div>
 
-            <div className="space-y-3 pt-2">
+            {/* Solid Grid Menu Items */}
+            <div className="grid grid-cols-2 gap-2.5">
+              {navLinks.map((link) => {
+                const IconComponent = link.icon;
+                return (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href)}
+                    className="flex items-center justify-between p-3.5 rounded-xl bg-[#131317] border border-zinc-800 hover:border-vault-lime hover:bg-zinc-800/90 text-white font-semibold text-xs transition-all shadow-md active:scale-95 group"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-black border border-zinc-700 flex items-center justify-center text-vault-lime group-hover:scale-110 transition-transform">
+                        <IconComponent className="w-3.5 h-3.5" />
+                      </div>
+                      <span className="font-heading tracking-wide uppercase text-[12px]">
+                        {link.name}
+                      </span>
+                    </div>
+                    <ChevronRight className="w-3.5 h-3.5 text-zinc-500 group-hover:text-vault-lime group-hover:translate-x-0.5 transition-all" />
+                  </a>
+                );
+              })}
+            </div>
+
+            {/* Primary Action Button */}
+            <div className="pt-2 space-y-3">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenTrial();
                 }}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-vault-lime text-black font-extrabold uppercase tracking-wider text-xs shadow-lime-glow hover:bg-vault-limeHover transition-all"
+                className="w-full flex items-center justify-center gap-2 py-4 px-5 rounded-xl bg-vault-lime text-black font-black uppercase tracking-wider text-xs shadow-lime-glow hover:bg-vault-limeHover active:scale-95 transition-all"
               >
-                <ShieldCheck className="w-4 h-4" />
-                <span>Claim Free 3-Day Pass</span>
+                <ShieldCheck className="w-4 h-4 text-black" />
+                <span>Claim Free 3-Day VIP Pass</span>
               </button>
 
-              <div className="flex items-center justify-between text-xs text-zinc-400 p-3 rounded-lg bg-zinc-900/40 border border-zinc-800/50">
+              {/* Developer / Official Inquiries Card */}
+              <div className="p-4 rounded-xl bg-[#131317] border border-zinc-800 space-y-2">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-zinc-400 block">
+                  Official Inquiries & Demo Contact
+                </span>
                 <a
                   href={`mailto:${GYM_DATA.brand.email}`}
-                  className="flex items-center gap-1.5 text-zinc-300 hover:text-vault-lime transition-colors"
+                  className="flex items-center gap-2 text-vault-lime text-xs font-mono font-bold hover:underline"
                 >
-                  <Mail className="w-3.5 h-3.5 text-vault-lime" />
+                  <Mail className="w-4 h-4 text-vault-lime shrink-0" />
                   <span>{GYM_DATA.brand.email}</span>
                 </a>
-                <span className="text-zinc-500 text-[11px]">Indiranagar, BLR</span>
+                <p className="text-[10px] text-zinc-500">
+                  Engineered by Symphonix Tech for premium fitness centers.
+                </p>
               </div>
             </div>
+
           </div>
         </div>
       )}

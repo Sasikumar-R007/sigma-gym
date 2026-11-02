@@ -71,7 +71,7 @@ export default function About({ onOpenTrial }: AboutProps) {
           
           {/* Left Column: Imagery Collage */}
           <div className="lg:col-span-6 relative">
-            <div className="relative h-[480px] sm:h-[540px] rounded-2xl overflow-hidden border border-zinc-700/80 shadow-2xl">
+            <div className="relative h-[340px] sm:h-[540px] rounded-2xl overflow-hidden border border-zinc-700/80 shadow-2xl">
               <Image
                 src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1200&auto=format&fit=crop"
                 alt="IronVault Fitness Interior and Equipment"
@@ -81,17 +81,17 @@ export default function About({ onOpenTrial }: AboutProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
               
               {/* Floating Stat Card */}
-              <div className="absolute bottom-6 left-6 right-6 p-5 rounded-xl bg-zinc-950/85 border border-zinc-700/80 backdrop-blur-md shadow-2xl">
+              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 p-4 sm:p-5 rounded-xl bg-zinc-950/90 border border-zinc-700/80 backdrop-blur-md shadow-2xl">
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-xs uppercase font-bold tracking-wider text-vault-lime">FACILITY SPECIFICATION</span>
-                    <h4 className="text-lg font-bold text-white font-heading">12,000 SQ.FT. BIOMECHANICAL SUITE</h4>
-                    <p className="text-xs text-zinc-400 mt-1">
-                      100% Eleiko Competition Barbells & Arsenal Strength Iso-Lateral Leverage Units
+                    <span className="text-[10px] sm:text-xs uppercase font-bold tracking-wider text-vault-lime">FACILITY SPECIFICATION</span>
+                    <h4 className="text-sm sm:text-lg font-bold text-white font-heading">12,000 SQ.FT. BIOMECHANICAL SUITE</h4>
+                    <p className="text-[11px] sm:text-xs text-zinc-400 mt-0.5 sm:mt-1 line-clamp-1 sm:line-clamp-none">
+                      100% Eleiko Competition Barbells & Arsenal Strength Iso-Lateral Units
                     </p>
                   </div>
-                  <div className="hidden sm:flex flex-col items-end">
-                    <span className="text-2xl font-black text-white font-heading">10,000+ KG</span>
+                  <div className="hidden sm:flex flex-col items-end shrink-0 pl-2">
+                    <span className="text-xl sm:text-2xl font-black text-white font-heading">10,000+ KG</span>
                     <span className="text-[10px] text-zinc-400 uppercase tracking-wider">Calibrated Steel</span>
                   </div>
                 </div>
