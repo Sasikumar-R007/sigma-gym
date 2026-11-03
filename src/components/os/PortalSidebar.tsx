@@ -17,7 +17,7 @@ import {
   ChevronDown,
   Sparkles,
 } from "lucide-react";
-import { SessionUser } from "@/lib/auth/session";
+import type { SessionUser } from "@/lib/auth/types";
 
 interface PortalSidebarProps {
   session: SessionUser;
@@ -44,7 +44,7 @@ export default function PortalSidebar({
   const themeAccentColor = isApex ? "#FF5500" : "#CCFF00";
 
   return (
-    <aside className="w-64 bg-[#0a0a0d] border-r border-zinc-800 flex flex-col justify-between shrink-0 min-h-screen text-zinc-300">
+    <aside className="w-64 bg-[#0a0a0d] border-r border-zinc-800 flex flex-col justify-between shrink-0 h-screen overflow-y-auto text-zinc-300 select-none">
       {/* Brand & Active Gym Switcher */}
       <div>
         <div className="p-5 border-b border-zinc-800">

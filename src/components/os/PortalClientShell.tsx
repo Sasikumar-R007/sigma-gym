@@ -4,7 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import PortalSidebar from "./PortalSidebar";
 import PortalHeader from "./PortalHeader";
-import { SessionUser } from "@/lib/auth/session";
+import type { SessionUser } from "@/lib/auth/types";
 
 interface PortalClientShellProps {
   session: SessionUser;
@@ -35,16 +35,16 @@ export default function PortalClientShell({
   };
 
   return (
-    <div className="min-h-screen bg-[#070709] text-white flex">
-      {/* Sidebar */}
+    <div className="h-screen bg-[#070709] text-white flex overflow-hidden">
+      {/* Fixed Sidebar - No movement on scroll */}
       <PortalSidebar
         session={session}
         onLogout={handleLogout}
         onSwitchGym={handleSwitchGym}
       />
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      {/* Main Content Area - Independent Scroll */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         <PortalHeader session={session} />
         <main className="flex-1 p-6 sm:p-8 overflow-y-auto">
           {children}

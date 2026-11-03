@@ -28,7 +28,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import { SessionUser } from "@/lib/auth/session";
+import type { SessionUser } from "@/lib/auth/types";
 
 interface DashboardProps {
   session: SessionUser;

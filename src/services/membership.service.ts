@@ -35,6 +35,36 @@ export async function createPlan(
   return newPlan;
 }
 
+export interface UpdatePlanInput {
+  id: string;
+  name?: string;
+  durationDays?: number;
+  price?: number;
+  registrationFee?: number;
+  description?: string;
+  facilitiesIncluded?: string[];
+  isActive?: boolean;
+}
+
+export async function updatePlan(
+  gymId: string,
+  planId: string,
+  input: UpdatePlanInput
+): Promise<SeedPlan | null> {
+  const plan = plansStore.find((p) => p.gymId === gymId && p.id === planId);
+  if (!plan) return null;
+
+  if (input.name !== undefined) plan.name = input.name.trim();
+  if (input.durationDays !== undefined) plan.durationDays = Number(input.durationDays);
+  if (input.price !== undefined) plan.price = Number(input.price);
+  if (input.registrationFee !== undefined) plan.registrationFee = Number(input.registrationFee);
+  if (input.description !== undefined) plan.description = input.description.trim();
+  if (input.facilitiesIncluded !== undefined) plan.facilitiesIncluded = input.facilitiesIncluded;
+  if (input.isActive !== undefined) plan.isActive = Boolean(input.isActive);
+
+  return plan;
+}
+
 export async function togglePlanStatus(
   gymId: string,
   planId: string

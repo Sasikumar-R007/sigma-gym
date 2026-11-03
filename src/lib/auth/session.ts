@@ -1,25 +1,9 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import type { SessionUser, PlatformRole, GymRole } from "./types";
 
-export type PlatformRole = "SUPER_ADMIN" | "USER";
-export type GymRole = "OWNER" | "MANAGER" | "RECEPTIONIST" | "TRAINER";
-
-export interface SessionUser {
-  userId: string;
-  email: string;
-  fullName: string;
-  platformRole: PlatformRole;
-  activeGymId: string;
-  activeGymName: string;
-  activeGymSlug: string;
-  gymRole: GymRole;
-  availableGyms?: {
-    id: string;
-    name: string;
-    slug: string;
-    role: GymRole;
-  }[];
-}
+export type { SessionUser, PlatformRole, GymRole };
+export * from "./types";
 
 const COOKIE_NAME = "symphonix_os_session";
 const SECRET_KEY = new TextEncoder().encode(

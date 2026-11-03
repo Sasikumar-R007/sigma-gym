@@ -54,6 +54,10 @@ export interface CreateMemberInput {
   amountPaid: number;
   paymentMethod: "CASH" | "UPI" | "CARD" | "BANK_TRANSFER";
   notes?: string;
+  joinedAt?: string;
+  photoUrl?: string;
+  idProofType?: string;
+  idProofNumber?: string;
 }
 
 export async function createMember(
@@ -69,12 +73,18 @@ export async function createMember(
   const newMemberCode = `${gymPrefix}-${1000 + existingCount + 1}`;
 
   const now = new Date();
-  const joinedAtStr = now.toISOString().split("T")[0];
-  const expiryDate = addDays(now, selectedPlan.durationDays);
+  const joinedAtStr = input.joinedAt || now.toISOString().split("T")[0];
+  const startDate = input.joinedAt ? new Date(input.joinedAt) : now;
+  const expiryDate = addDays(startDate, selectedPlan.durationDays);
   const expiryDateStr = expiryDate.toISOString().split("T")[0];
 
   const totalFee = selectedPlan.price + selectedPlan.registrationFee;
   const balanceDue = Math.max(0, totalFee - input.amountPaid);
+
+  const defaultPhoto =
+    input.gender === "FEMALE"
+      ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop"
+      : "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop";
 
   const newMember: SeedMember = {
     id: `mem-${Date.now()}`,
@@ -93,10 +103,7 @@ export async function createMember(
     planExpiryDate: expiryDateStr,
     balanceDue,
     totalPaid: input.amountPaid,
-    photoUrl:
-      input.gender === "FEMALE"
-        ? "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop"
-        : "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop",
+    photoUrl: input.photoUrl?.trim() || defaultPhoto,
   };
 
   membersStore.unshift(newMember);
@@ -114,6 +121,46 @@ export async function createMember(
   }
 
   return newMember;
+}
+
+export interface UpdateMemberInput {
+  id: string;
+  fullName?: string;
+  phone?: string;
+  email?: string;
+  gender?: "MALE" | "FEMALE" | "OTHER";
+  status?: SeedMember["status"];
+  planExpiryDate?: string;
+  balanceDue?: number;
+  emergencyContactName?: string;
+  emergencyContactPhone?: string;
+  bloodGroup?: string;
+  photoUrl?: string;
+  activePlanName?: string;
+}
+
+export async function updateMember(
+  gymId: string,
+  memberId: string,
+  input: UpdateMemberInput
+): Promise<SeedMember | null> {
+  const member = membersStore.find((m) => m.gymId === gymId && m.id === memberId);
+  if (!member) return null;
+
+  if (input.fullName !== undefined) member.fullName = input.fullName.trim();
+  if (input.phone !== undefined) member.phone = input.phone.trim();
+  if (input.email !== undefined) member.email = input.email.trim();
+  if (input.gender !== undefined) member.gender = input.gender;
+  if (input.status !== undefined) member.status = input.status;
+  if (input.planExpiryDate !== undefined) member.planExpiryDate = input.planExpiryDate;
+  if (input.balanceDue !== undefined) member.balanceDue = Number(input.balanceDue);
+  if (input.emergencyContactName !== undefined) member.emergencyContactName = input.emergencyContactName.trim();
+  if (input.emergencyContactPhone !== undefined) member.emergencyContactPhone = input.emergencyContactPhone.trim();
+  if (input.bloodGroup !== undefined) member.bloodGroup = input.bloodGroup;
+  if (input.photoUrl !== undefined) member.photoUrl = input.photoUrl.trim();
+  if (input.activePlanName !== undefined) member.activePlanName = input.activePlanName.trim();
+
+  return member;
 }
 
 export async function updateMemberStatus(

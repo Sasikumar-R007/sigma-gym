@@ -12,34 +12,47 @@ import {
   Building2,
   Calendar,
   Sparkles,
+  QrCode,
+  Smartphone,
+  Zap,
 } from "lucide-react";
-import { SeedPayment } from "@/lib/db/seedData";
+import { SeedPayment, SeedMember } from "@/lib/db/seedData";
 
 export default function PaymentsPage() {
   const [payments, setPayments] = useState<SeedPayment[]>([]);
+  const [members, setMembers] = useState<SeedMember[]>([]);
   const [methodFilter, setMethodFilter] = useState("ALL");
   const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   // Record Payment Modal State
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
-  const [memberId, setMemberId] = useState("");
+  const [selectedMemberId, setSelectedMemberId] = useState("");
   const [amount, setAmount] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"UPI" | "CASH" | "CARD" | "BANK_TRANSFER">("UPI");
   const [transactionRef, setTransactionRef] = useState("");
-  const [planName, setPlanName] = useState("Membership Renewal");
+  const [planName, setPlanName] = useState("Membership Renewal Fee");
+  const [showUpiQr, setShowUpiQr] = useState(false);
 
   // Printable Receipt Modal State
   const [activeReceipt, setActiveReceipt] = useState<SeedPayment | null>(null);
 
-  const fetchPayments = async () => {
+  const fetchPaymentsAndMembers = async () => {
     setIsLoading(true);
     try {
-      const url = `/api/payments?method=${methodFilter}${search ? `&search=${encodeURIComponent(search)}` : ""}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      if (data.payments) {
-        setPayments(data.payments);
+      const [payRes, memRes] = await Promise.all([
+        fetch(`/api/payments?method=${methodFilter}${search ? `&search=${encodeURIComponent(search)}` : ""}`),
+        fetch("/api/members"),
+      ]);
+      const payData = await payRes.json();
+      const memData = await memRes.json();
+
+      if (payData.payments) setPayments(payData.payments);
+      if (memData.members) {
+        setMembers(memData.members);
+        if (!selectedMemberId && memData.members.length > 0) {
+          setSelectedMemberId(memData.members[0].id);
+        }
       }
     } catch {
       // Handle error
@@ -49,12 +62,29 @@ export default function PaymentsPage() {
   };
 
   useEffect(() => {
-    fetchPayments();
+    fetchPaymentsAndMembers();
   }, [methodFilter]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    fetchPayments();
+    fetchPaymentsAndMembers();
+  };
+
+  const handleMemberChange = (id: string) => {
+    setSelectedMemberId(id);
+    const m = members.find((mem) => mem.id === id);
+    if (m) {
+      setAmount(m.balanceDue > 0 ? String(m.balanceDue) : "3499");
+      setPlanName(`${m.activePlanName} (Renewal / Balance Dues)`);
+    }
+  };
+
+  const openRecordModal = () => {
+    setIsRecordModalOpen(true);
+    if (members.length > 0) {
+      const defaultM = members.find((m) => m.balanceDue > 0) || members[0];
+      handleMemberChange(defaultM.id);
+    }
   };
 
   const handleRecordPayment = async (e: React.FormEvent) => {
@@ -66,10 +96,10 @@ export default function PaymentsPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          memberId: memberId || "mem-iv-1",
+          memberId: selectedMemberId,
           amount: Number(amount),
           paymentMethod,
-          transactionRef,
+          transactionRef: transactionRef || (paymentMethod === "UPI" ? `UPI/${Math.floor(1000000000 + Math.random() * 9000000000)}/Auto` : undefined),
           planName,
         }),
       });
@@ -79,7 +109,7 @@ export default function PaymentsPage() {
         setIsRecordModalOpen(false);
         setAmount("");
         setTransactionRef("");
-        fetchPayments();
+        fetchPaymentsAndMembers();
         if (data.payment) {
           setActiveReceipt(data.payment);
         }
@@ -88,6 +118,8 @@ export default function PaymentsPage() {
       // Handle error
     }
   };
+
+  const currentSelectedMember = members.find((m) => m.id === selectedMemberId);
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
@@ -103,16 +135,16 @@ export default function PaymentsPage() {
             Fee Collection & Receipt Ledger
           </h1>
           <p className="text-xs text-zinc-400 mt-0.5">
-            Immutable transaction records, verified UPI references & printable invoices.
+            Smart balance auto-detection, dynamic UPI QR generator & printable tax invoices.
           </p>
         </div>
 
         <button
-          onClick={() => setIsRecordModalOpen(true)}
+          onClick={openRecordModal}
           className="px-5 py-2.5 rounded-xl bg-vault-lime text-black font-extrabold uppercase text-xs tracking-wider shadow-lime-glow hover:bg-vault-limeHover transition-all flex items-center justify-center gap-2"
         >
           <Plus className="w-4 h-4 text-black" />
-          <span>Record New Payment</span>
+          <span>Record New Fee Payment</span>
         </button>
       </div>
 
@@ -237,14 +269,19 @@ export default function PaymentsPage() {
         </div>
       </div>
 
-      {/* Record Payment Modal */}
+      {/* SMART RECORD PAYMENT MODAL */}
       {isRecordModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-          <div className="max-w-md w-full p-6 sm:p-8 rounded-3xl bg-zinc-950 border border-zinc-800 shadow-2xl space-y-5">
+          <div className="max-w-lg w-full p-6 sm:p-8 rounded-3xl bg-zinc-950 border border-zinc-700 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
-              <h3 className="text-lg font-black text-white font-heading">
-                Record Member Fee Payment
-              </h3>
+              <div>
+                <h3 className="text-lg font-black text-white font-heading">
+                  Smart Fee Collection
+                </h3>
+                <p className="text-xs text-zinc-400">
+                  Select member to auto-fetch dues & generate dynamic UPI QR.
+                </p>
+              </div>
               <button
                 onClick={() => setIsRecordModalOpen(false)}
                 className="p-1 rounded-lg text-zinc-400 hover:text-white"
@@ -254,26 +291,61 @@ export default function PaymentsPage() {
             </div>
 
             <form onSubmit={handleRecordPayment} className="space-y-4">
+              
+              {/* Member Selection */}
               <div>
                 <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">
                   Select Member *
                 </label>
                 <select
-                  value={memberId}
-                  onChange={(e) => setMemberId(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white text-xs focus:outline-none focus:border-vault-lime"
+                  value={selectedMemberId}
+                  onChange={(e) => handleMemberChange(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white text-xs focus:outline-none focus:border-vault-lime font-medium"
                 >
-                  <option value="mem-iv-1">Rajesh Kannan (IV-1001)</option>
-                  <option value="mem-iv-2">Meera Nambiar (IV-1002)</option>
-                  <option value="mem-iv-3">Rohan Deshmukh (IV-1003)</option>
-                  <option value="mem-iv-5">Arjun Natarajan (IV-1005 - Due ₹2,000)</option>
-                  <option value="mem-iv-6">Divya Balakrishnan (IV-1006)</option>
+                  {members.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.fullName} ({m.memberCode}) — {m.balanceDue > 0 ? `Pending Due: ₹${m.balanceDue.toLocaleString("en-IN")}` : "Paid in Full"}
+                    </option>
+                  ))}
                 </select>
               </div>
 
+              {/* Dynamic Due Indicator & Quick-Fill Chips */}
+              {currentSelectedMember && (
+                <div className="p-3.5 rounded-xl bg-zinc-900 border border-zinc-800 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-zinc-400">Current Outstanding Due:</span>
+                    <span className="text-sm font-mono font-black text-amber-400">
+                      ₹{currentSelectedMember.balanceDue.toLocaleString("en-IN")}
+                    </span>
+                  </div>
+
+                  {currentSelectedMember.balanceDue > 0 && (
+                    <div className="flex items-center gap-2 pt-1 border-t border-zinc-800/80">
+                      <span className="text-[10px] text-zinc-400 uppercase font-bold">1-Click Amount:</span>
+                      <button
+                        type="button"
+                        onClick={() => setAmount(String(currentSelectedMember.balanceDue))}
+                        className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-bold text-[10px] border border-amber-500/40 hover:bg-amber-500/30"
+                      >
+                        Full Due (₹{currentSelectedMember.balanceDue})
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setAmount(String(Math.round(currentSelectedMember.balanceDue / 2)))}
+                        className="px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 font-bold text-[10px] hover:bg-zinc-700"
+                      >
+                        Half (₹{Math.round(currentSelectedMember.balanceDue / 2)})
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Amount input */}
               <div>
                 <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">
-                  Payment Amount (₹) *
+                  Collection Amount (₹) *
                 </label>
                 <input
                   type="number"
@@ -281,40 +353,81 @@ export default function PaymentsPage() {
                   placeholder="e.g. 2000"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white text-xs focus:outline-none focus:border-vault-lime font-mono"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white text-base focus:outline-none focus:border-vault-lime font-mono font-bold"
                 />
               </div>
 
+              {/* Payment Mode Selection */}
               <div>
                 <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">
                   Payment Mode *
                 </label>
-                <select
-                  value={paymentMethod}
-                  onChange={(e) => setPaymentMethod(e.target.value as any)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white text-xs focus:outline-none focus:border-vault-lime"
-                >
-                  <option value="UPI">UPI (Google Pay / PhonePe / Paytm)</option>
-                  <option value="CARD">Credit / Debit Card (Card POS)</option>
-                  <option value="CASH">Cash Payment</option>
-                  <option value="BANK_TRANSFER">Direct IMPS / NEFT</option>
-                </select>
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { id: "UPI", label: "UPI (QR / PhonePe)" },
+                    { id: "CARD", label: "Card (POS Swipe)" },
+                    { id: "CASH", label: "Cash Entry" },
+                  ].map((m) => (
+                    <button
+                      key={m.id}
+                      type="button"
+                      onClick={() => setPaymentMethod(m.id as any)}
+                      className={`p-2.5 rounded-xl border text-center text-xs font-bold transition-all ${
+                        paymentMethod === m.id
+                          ? "bg-vault-lime text-black border-vault-lime shadow-sm"
+                          : "bg-zinc-900 border-zinc-800 text-zinc-300 hover:border-zinc-700"
+                      }`}
+                    >
+                      {m.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
+              {/* Dynamic Instant UPI QR Code Preview for Reception Screen */}
+              {paymentMethod === "UPI" && amount && (
+                <div className="p-4 rounded-2xl bg-zinc-900/90 border border-vault-lime/40 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono uppercase text-vault-lime font-bold flex items-center gap-1">
+                      <QrCode className="w-3.5 h-3.5" /> Instant UPI QR for Member
+                    </span>
+                    <span className="text-[10px] text-zinc-400 font-mono">
+                      Amount: ₹{Number(amount).toLocaleString("en-IN")}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-4 bg-zinc-950 p-3 rounded-xl border border-zinc-800">
+                    <div className="w-16 h-16 bg-white p-1 rounded-lg flex items-center justify-center shrink-0">
+                      <QrCode className="w-14 h-14 text-black" />
+                    </div>
+                    <div className="text-xs space-y-0.5">
+                      <div className="text-white font-bold font-mono">ironvault@icici</div>
+                      <div className="text-[10px] text-zinc-400">
+                        Scan with GPay, PhonePe or Paytm
+                      </div>
+                      <span className="inline-block px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-400 font-mono text-[9px] font-bold">
+                        Auto-Reconciling
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Transaction Reference */}
               <div>
                 <label className="block text-[11px] font-bold uppercase tracking-wider text-zinc-400 mb-1">
-                  Transaction Reference (Optional)
+                  Transaction Ref / Note (Optional)
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. UPI/1234567890/GPay"
+                  placeholder="e.g. PhonePe/882190 or Leave blank for auto-ref"
                   value={transactionRef}
                   onChange={(e) => setTransactionRef(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-white text-xs focus:outline-none focus:border-vault-lime font-mono"
                 />
               </div>
 
-              <div className="pt-3 flex justify-end gap-2">
+              <div className="pt-3 flex justify-end gap-2 border-t border-zinc-800">
                 <button
                   type="button"
                   onClick={() => setIsRecordModalOpen(false)}
@@ -324,9 +437,9 @@ export default function PaymentsPage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-vault-lime text-black font-extrabold text-xs uppercase"
+                  className="px-5 py-2 rounded-xl bg-vault-lime text-black font-extrabold text-xs uppercase shadow-lime-glow hover:bg-vault-limeHover"
                 >
-                  Generate Receipt
+                  Issue Receipt & Update Dues
                 </button>
               </div>
             </form>
@@ -443,4 +556,3 @@ export default function PaymentsPage() {
     </div>
   );
 }
-

@@ -12,7 +12,7 @@ import {
   Bell,
   Building2,
 } from "lucide-react";
-import { SessionUser } from "@/lib/auth/session";
+import type { SessionUser } from "@/lib/auth/types";
 
 interface PortalHeaderProps {
   session: SessionUser;

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireSession } from "@/lib/auth/session";
-import { getMembersByGym, createMember } from "@/services/member.service";
+import { getMembersByGym, createMember, updateMember } from "@/services/member.service";
 
 export async function GET(req: NextRequest) {
   try {
@@ -43,6 +43,10 @@ export async function POST(req: NextRequest) {
         amountPaid: Number(body.amountPaid) || 0,
         paymentMethod: body.paymentMethod || "UPI",
         notes: body.notes,
+        joinedAt: body.joinedAt,
+        photoUrl: body.photoUrl,
+        idProofType: body.idProofType,
+        idProofNumber: body.idProofNumber,
       },
       session.fullName
     );
@@ -50,6 +54,27 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, member });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Failed to create member";
+    return NextResponse.json({ error: msg }, { status: 400 });
+  }
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const session = await requireSession(["OWNER", "MANAGER", "RECEPTIONIST"]);
+    const body = await req.json();
+
+    if (!body.id) {
+      return NextResponse.json({ error: "Member ID is required." }, { status: 400 });
+    }
+
+    const updated = await updateMember(session.activeGymId, body.id, body);
+    if (!updated) {
+      return NextResponse.json({ error: "Member not found." }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, member: updated });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : "Failed to update member";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 }
